@@ -45,6 +45,7 @@ body {
     align-items: center;
     font-family: Arimo, Arial, sans-serif;
     background-image: url(back-app.jpg);
+    background-size: cover;
 }
 
 #header {
@@ -162,7 +163,7 @@ span[match="wrong"], .pastel-wrong {
     width: calc(9 * var(--unit));
     height: calc(12 * var(--unit));
     border-radius: calc(1 * var(--unit));
-    background-color: lightgray;
+    background-color: whitesmoke;
     display: inline-flex;
     align-items: center;
     justify-content: center;

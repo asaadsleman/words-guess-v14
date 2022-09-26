@@ -505,7 +505,7 @@ function show_hint() {
     // are hints available? 
     let available = 0;
     for (let index = 0; index < 5; index++) {
-        const lett = word_of_the_day[i];
+        const lett = word_of_the_day[index];
         if (!letter_states.hasOwnProperty(lett)) {
             available++;
         }
