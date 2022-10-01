@@ -549,7 +549,7 @@ function show_hint() {
 document.addEventListener('DOMContentLoaded', function () {
     load_from_local_storage();
     document.getElementById('help-button').addEventListener('click', show_help);
-    document.getElementById('help-button').addEventListener('click', show_help_ar);
+    document.getElementById('help-button-ar').addEventListener('click', show_help_ar);
     document.getElementById('hint-button').addEventListener('click', show_hint);
     document.getElementById('success-button').addEventListener('click', show_success_screen);
     document.getElementById('share-button').addEventListener('click', copy_result);
