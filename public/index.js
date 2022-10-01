@@ -104,12 +104,21 @@ function set_modal_state() {
             document.getElementById('help-screen').classList.remove('hidden');
             document.getElementById('help-screen').scrollTop = 0;
             document.getElementById('success-screen').classList.add('hidden');
+            document.getElementById('help-screen-ar').classList.add('hidden');
             break;
         
+        case 'help_ar':
+            document.getElementById('modal').classList.remove('hidden');
+            document.getElementById('help-screen-ar').classList.remove('hidden');
+            document.getElementById('help-screen-ar').scrollTop = 0;
+            document.getElementById('success-screen').classList.add('hidden');
+            document.getElementById('help-screen').classList.add('hidden');
+            break;
         
         case 'success':
             document.getElementById('modal').classList.remove('hidden');
             document.getElementById('help-screen').classList.add('hidden');
+            document.getElementById('help-screen-ar').classList.add('hidden');
             document.getElementById('success-screen').classList.remove('hidden');
             fill_success_details();
             countdown();
@@ -123,7 +132,7 @@ function set_modal_state() {
 // login-success mod
 function show_help() {
     if (history.state !== 'help') {
-        if (history.state === 'success') {
+        if (history.state === 'success' || history.state === 'help_ar') {
             history.replaceState('help', '');
         }
         else
@@ -132,10 +141,21 @@ function show_help() {
     set_modal_state();
 }
 
+function show_help_ar() {
+    if (history.state !== 'help_ar') {
+        if (history.state === 'success' || history.state === 'help') {
+            history.replaceState('help_ar', '');
+        }
+        else
+            history.pushState('help_ar', '');
+    }
+    set_modal_state();
+}
+
 // login-success mod
 function show_success_screen() {
     if (history.state !== 'success') {
-        if (history.state === 'help')
+        if (history.state === 'help' || history.state === 'help_ar')
             history.replaceState('success', '');
         else
             history.pushState('success', '');
@@ -278,7 +298,7 @@ function two_digits(x) {
 }
 
 function hide_modal() {
-    if (history.state === 'help' || history.state === 'success')
+    if (history.state === 'help' || history.state === 'success' || history.state === 'help_ar')
         history.replaceState('app', '');
     set_modal_state();
 }
@@ -526,19 +546,10 @@ function show_hint() {
             elt.setAttribute('match', letter_states[elt.innerText]);
 }
 
-function show_help_ar() {
-    help_lang = 'ar';
-    show_help();
-}
-
-function show_help_he() {
-    help_lang = 'he';
-    show_help();
-}
-
 document.addEventListener('DOMContentLoaded', function () {
     load_from_local_storage();
     document.getElementById('help-button').addEventListener('click', show_help);
+    document.getElementById('help-button').addEventListener('click', show_help_ar);
     document.getElementById('hint-button').addEventListener('click', show_hint);
     document.getElementById('success-button').addEventListener('click', show_success_screen);
     document.getElementById('share-button').addEventListener('click', copy_result);
