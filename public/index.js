@@ -44,7 +44,7 @@ function getRndInteger(min, max) {
 }
 
 function get_date() {
-    return new Date().toLocaleDateString('he-IL', { timeZone: 'Asia/Jerusalem' });
+    return new Date().toLocaleDateString('he-IL', { timeZone: 'Australia/Sydney' });
 }
 
 // NO CHANGE
@@ -280,7 +280,7 @@ function countdown() {
         return;
     }
 
-    const time_str = new Date().toLocaleTimeString('he-IL', { timeZone: 'Asia/Jerusalem', hourCycle: 'h23' });
+    const time_str = new Date().toLocaleTimeString('he-IL', { timeZone: 'Australia/Sydney', hourCycle: 'h23' });
     const [hours, minutes, seconds] = time_str.split(':').map(function (x) { return parseInt(x); });
     const since_midnight = 3600 * hours + 60 * minutes + seconds;
     const to_midnight = 3600 * 24 - since_midnight;
