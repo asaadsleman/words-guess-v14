@@ -217,9 +217,11 @@ async function fill_success_details() {
     let all_results = await getFormattedResults();
 
     document.getElementById('stats-games').innerText = all_results.length;
-    let wins = 0, streak = 0, max_streak = 0, solved_with_hint = 0, last = false;
+    let wins = 0, streak = 0, max_streak = 0, solved_with_hint = 0, last = false, total_score = 2;
     let histogram = [0, 0, 0, 0, 0, 0, 0];
+    const score_by_attempts = [0, 5, 5, 4, 3, 2, 1]
     for (const result of all_results) {
+        total_score += 2;
         if (result[0] === 'X') {
             streak = 0;
         } else {
@@ -235,6 +237,7 @@ async function fill_success_details() {
                 // no hint used
                 histogram[result[0]] += 1;
                 last = false;
+                total_score += score_by_attempts[result[0]]
             }
         }
     }
@@ -242,6 +245,7 @@ async function fill_success_details() {
     document.getElementById('stats-streak').innerText = streak;
     document.getElementById('stats-max-streak').innerText = max_streak;
     document.getElementById('stats-hint-count').innerText = solved_with_hint;
+    document.getElementById('score').innerText = total_score;
 
     const hist_max = Math.max(1, Math.max(...histogram));
     const num_guesses = (localStorage.getItem('finished') === 'yes') ? guesses.length : 0;
