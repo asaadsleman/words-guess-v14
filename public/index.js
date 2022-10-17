@@ -217,7 +217,7 @@ async function fill_success_details() {
     let all_results = await getFormattedResults();
 
     document.getElementById('stats-games').innerText = all_results.length;
-    let wins = 0, streak = 0, max_streak = 0, solved_with_hint = 0, last = false, total_score = 2;
+    let wins = 0, streak = 0, max_streak = 0, solved_with_hint = 0, last = false, total_score = 0;
     let histogram = [0, 0, 0, 0, 0, 0, 0];
     const score_by_attempts = [0, 5, 5, 4, 3, 2, 1]
     for (const result of all_results) {
