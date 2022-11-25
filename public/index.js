@@ -39,10 +39,6 @@ async function getLastestFormattedResults() {
     return formattedResults;
 }
 
-function getRndInteger(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-}
-
 function get_date() {
     return new Date().toLocaleDateString('he-IL', { timeZone: 'Australia/Sydney' });
 }
@@ -520,34 +516,56 @@ function adapt_to_window_size() {
     });
 }
 
-let hint_indices = [];
-function show_hint() {
+
+function random_word(letter){
+    let choice;
+    do{
+        const randnum = getRndInteger(0, Math.floor(CONCATED_WORDS.length));
+        const index = (randnum * 5) % CONCATED_WORDS.length;
+        choice = CONCATED_WORDS.slice(index, index + 5);
+    } while(!includes_letter(un_finalize(choice), letter));
+    return choice;
+}
+
+function includes_letter(word, letter){
+    for(let i=0; i < 5; i++){
+        if(word[i] === letter){
+            return true;
+        }
+    }
+    return false;
+}
+
+function show_hint(){
     if (localStorage.getItem('finished') === 'yes') return;
-    if (hint_attempts <= 0) {
+    if (hint_attempts <= 0 && guesses.length >= 6) {
         return;
     }
     // are hints available? 
-    let available = 0;
-    for (let index = 0; index < 5; index++) {
-        const lett = word_of_the_day[index];
-        if (!letter_states.hasOwnProperty(lett)) {
-            available++;
+    let unf_word = un_finalize(word_of_the_day);
+    let undisc = -1;
+    let wrongplace = -1;
+    for (let i = 0; i < 5; i++) {
+        const lett = unf_word[i];
+        if(!letter_states.hasOwnProperty(lett)){
+            undisc = i;
+            break;
+        } else if(letter_states[lett] == 'other'){
+            wrongplace = i;
         }
+        
     }
     // if all letters have states, exit hint
-    if (available === 0) return;
-    rnd_ind = getRndInteger(0, 5);
-    let hint = word_of_the_day[rnd_ind];
-    // if hint is shown before, or used
-    while (hint_indices.includes(rnd_ind) || letter_states.hasOwnProperty(hint)) {
-        rnd_ind = getRndInteger(0, 5);
-        hint = word_of_the_day[rnd_ind];
+    let available = (undisc > -1 || wrongplace > -1) ? true : false;
+    if (!available) return;
+    // we have EITHER undisc or undic & wrongplace or only wrongplace
+    const inc = (undisc > -1) ? unf_word[undisc] : unf_word[wrongplace];
+    let hint = random_word(inc);
+    for(let i1 = 0; i1 < 5; i1++){
+        type_letter(hint[i1]);
     }
-    letter_states[hint] = 'other';
     hint_attempts--;
-    for (const elt of document.getElementsByClassName('key'))
-        if (letter_states.hasOwnProperty(elt.innerText))
-            elt.setAttribute('match', letter_states[elt.innerText]);
+    make_guess();
 }
 
 document.addEventListener('DOMContentLoaded', function () {
