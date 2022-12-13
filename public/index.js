@@ -517,28 +517,34 @@ function adapt_to_window_size() {
 }
 
 
-function random_word(letter){
+function random_word(letter, ind){
     let choice;
-    do{
-        const randnum = getRndInteger(0, Math.floor(CONCATED_WORDS.length));
-        const index = (randnum * 5) % CONCATED_WORDS.length;
-        choice = CONCATED_WORDS.slice(index, index + 5);
-    } while(!includes_letter(un_finalize(choice), letter));
-    return choice;
-}
-
-function includes_letter(word, letter){
-    for(let i=0; i < 5; i++){
-        if(word[i] === letter){
-            return true;
+    for(let i = 0; i < CONCATED_WORDS.length; i += 5){
+        choice = CONCATED_WORDS.substring(i, i+5);
+        if(validate_word(choice, ind)){
+            console.log(choice[ind]);
+            return choice;
         }
     }
-    return false;
+}
+
+function validate_word(candidate, index){
+    if (!(candidate[index] === word_of_the_day[index]) || candidate === word_of_the_day) {
+        return false;
+    }
+    let letters = new Set(word_of_the_day);
+    letters.delete(word_of_the_day[index]);
+    for(let k = 0; k < candidate.length; k++){
+        if(k !== index && letters.has(candidate[k])){
+            return false;
+        }
+    }
+    return true;
 }
 
 function show_hint(){
     if (localStorage.getItem('finished') === 'yes') return;
-    if (hint_attempts <= 0 && guesses.length >= 6) {
+    if (hint_attempts <= 0 || guesses.length >= 6) {
         return;
     }
     // are hints available? 
@@ -560,7 +566,8 @@ function show_hint(){
     if (!available) return;
     // we have EITHER undisc or undic & wrongplace or only wrongplace
     const inc = (undisc > -1) ? unf_word[undisc] : unf_word[wrongplace];
-    let hint = random_word(inc);
+    const hind = (undisc > -1) ? undisc : wrongplace;
+    let hint = random_word(inc, hind);
     for(let i1 = 0; i1 < 5; i1++){
         type_letter(hint[i1]);
     }
