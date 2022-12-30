@@ -519,10 +519,9 @@ function adapt_to_window_size() {
 
 function random_word(letter, ind){
     let choice;
-    for(let i = 0; i < CONCATED_WORDS.length; i += 5){
-        choice = CONCATED_WORDS.substring(i, i+5);
-        if(validate_word(choice, ind)){
-            console.log(choice[ind]);
+    for(let i = 0; i < HINT_CHOICES.length; i += 5){
+        choice = HINT_CHOICES.substring(i, i+5);
+        if(validate_word(un_finalize(choice), ind)){
             return choice;
         }
     }
