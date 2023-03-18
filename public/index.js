@@ -101,6 +101,7 @@ function set_modal_state() {
             document.getElementById('help-screen').scrollTop = 0;
             document.getElementById('success-screen').classList.add('hidden');
             document.getElementById('help-screen-ar').classList.add('hidden');
+            document.getElementById('levels-screen').classList.add('hidden');
             break;
         
         case 'help_ar':
@@ -108,6 +109,7 @@ function set_modal_state() {
             document.getElementById('help-screen-ar').classList.remove('hidden');
             document.getElementById('help-screen-ar').scrollTop = 0;
             document.getElementById('success-screen').classList.add('hidden');
+            document.getElementById('levels-screen').classList.add('hidden');
             document.getElementById('help-screen').classList.add('hidden');
             break;
         
@@ -115,9 +117,18 @@ function set_modal_state() {
             document.getElementById('modal').classList.remove('hidden');
             document.getElementById('help-screen').classList.add('hidden');
             document.getElementById('help-screen-ar').classList.add('hidden');
+            document.getElementById('levels-screen').classList.add('hidden');
             document.getElementById('success-screen').classList.remove('hidden');
             fill_success_details();
             countdown();
+            break;
+
+        case 'settings':
+            document.getElementById('modal').classList.remove('hidden');
+            document.getElementById('levels-screen').classList.remove('hidden');
+            document.getElementById('help-screen').classList.add('hidden');
+            document.getElementById('success-screen').classList.add('hidden');
+            document.getElementById('help-screen-ar').classList.add('hidden');
             break;
 
         default:
@@ -128,7 +139,7 @@ function set_modal_state() {
 // login-success mod
 function show_help() {
     if (history.state !== 'help') {
-        if (history.state === 'success' || history.state === 'help_ar') {
+        if (history.state === 'success' || history.state === 'help_ar'|| history.state === 'settings') {
             history.replaceState('help', '');
         }
         else
@@ -139,7 +150,7 @@ function show_help() {
 
 function show_help_ar() {
     if (history.state !== 'help_ar') {
-        if (history.state === 'success' || history.state === 'help') {
+        if (history.state === 'success' || history.state === 'help'|| history.state === 'settings') {
             history.replaceState('help_ar', '');
         }
         else
@@ -151,10 +162,20 @@ function show_help_ar() {
 // login-success mod
 function show_success_screen() {
     if (history.state !== 'success') {
-        if (history.state === 'help' || history.state === 'help_ar')
+        if (history.state === 'help' || history.state === 'help_ar'|| history.state === 'settings')
             history.replaceState('success', '');
         else
             history.pushState('success', '');
+    }
+    set_modal_state();
+}
+
+function show_settings_screen() {
+    if (history.state !== 'settings') {
+        if (history.state === 'help' || history.state === 'help_ar'|| history.state === 'success')
+            history.replaceState('settings', '');
+        else
+            history.pushState('settings', '');
     }
     set_modal_state();
 }
@@ -298,7 +319,7 @@ function two_digits(x) {
 }
 
 function hide_modal() {
-    if (history.state === 'help' || history.state === 'success' || history.state === 'help_ar')
+    if (history.state === 'help' || history.state === 'success' || history.state === 'help_ar' || history.state === 'settings')
         history.replaceState('app', '');
     set_modal_state();
 }
@@ -541,6 +562,40 @@ function validate_word(candidate, index){
     return true;
 }
 
+function game_init(){
+    let checked_val = document.querySelector('input[name=game-level]:checked').value;
+    let i;
+    switch (checked_val) {
+        case "HARD":
+            i = 0;
+            break;
+        
+        case "MEDIUM":
+            i = 1;
+            break;
+        
+        default:
+            i = 2;
+            break;
+    }
+    for(let index = 0; index < i; index++){
+        show_helpful_hint(index);
+    }
+    hide_modal();
+    return;
+}
+
+//helper function for t different hints
+function show_helpful_hint(hind){
+    let unf_word = un_finalize(word_of_the_day);
+    const inc = unf_word[hind];
+    let hint = random_word(inc, hind);
+    for(let i1 = 0; i1 < 5; i1++){
+        type_letter(hint[i1]);
+    }
+    make_guess();
+}
+
 function show_hint(){
     if (localStorage.getItem('finished') === 'yes') return;
     if (hint_attempts <= 0 || guesses.length >= 6) {
@@ -581,7 +636,10 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('hint-button').addEventListener('click', show_hint);
     document.getElementById('success-button').addEventListener('click', show_success_screen);
     document.getElementById('share-button').addEventListener('click', copy_result);
-    document.getElementById('modal').addEventListener('click', hide_modal);
+    document.getElementById('close-button-ar').addEventListener('click', hide_modal);
+    document.getElementById('close-button-he').addEventListener('click', hide_modal);
+    document.getElementById('close-button-success').addEventListener('click', hide_modal);
+    document.getElementById('choose-level').addEventListener('click', game_init);
     document.body.addEventListener('keydown', function (event) {
         if (event.ctrlKey || event.altKey || event.metaKey)
             return;
@@ -594,7 +652,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     for (const elt of document.getElementsByClassName('key'))
         elt.addEventListener('click', handle_on_screen_keyboard_click);
-    set_modal_state();
+    show_settings_screen();
     window.addEventListener('popstate', set_modal_state);
     adapt_to_window_size();
     window.addEventListener('resize', adapt_to_window_size);

@@ -114,7 +114,7 @@
     </div>
     <div id="modal" class="hidden">
         <div id="help-screen" class="hidden">
-            <div class="close-button">⨉</div>
+            <div class="close-button" id="close-button-he">⨉</div>
             <h1>איך לשחק?</h1>
             <p>נסו לנחש את המלה ה<b>עבראנית</b>, יש לכם 6 נסיונות.</p>
             <p>
@@ -124,36 +124,23 @@
             <p>לאחר כל ניחוש נשנה את צבע האותיות כדי להראות עד כמה הייתם קרובים למלת היום.</p>
             <h2>דוגמאות</h2>
             <p>
-                <span class="letter example typed">ר</span>
+                <span class="letter example" match="other">ר</span>
                 <span class="letter example" match="exact">צ</span>
                 <span class="letter example typed">ו</span>
-                <span class="letter example typed">נ</span>
+                <span class="letter example" match="wrong">נ</span>
                 <span class="letter example typed">י</span>
+            </p>
+            <p>
+                האות
+                <b>ר</b>
+                נכללת במלה, אבל היא הוצבה במקום הלא נכון.
             </p>
             <p>
                 האות
                 <b>צ</b>
                 נכללת במלה, והיא הוצבה במקום הנכון.
             </p>
-            <p>
-                <span class="letter example typed">ק</span>
-                <span class="letter example typed">ב</span>
-                <span class="letter example typed">י</span>
-                <span class="letter example typed">י</span>
-                <span class="letter example" match="other">ם</span>
-            </p>
-            <p>
-                האות
-                <b>מ</b>
-                נכללת במלה, אבל היא הוצבה במקום הלא נכון.
-            </p>
-            <p>
-                <span class="letter example typed">א</span>
-                <span class="letter example typed">כ</span>
-                <span class="letter example typed">ל</span>
-                <span class="letter example" match="wrong">נ</span>
-                <span class="letter example typed">ו</span>
-            </p>
+            
             <p>
                 האות
                 <b>נ</b>
@@ -163,9 +150,12 @@
                 <b>רמזים:</b>
                 לכל משחק ניתן לקבל 3 רמזים בעזרת המנורה בצד ימין, הם ייצבעו בכתום במקלדת.
             </p>
+            <button class="level-button" id="level-button-he">
+                בחרו רמה
+            </button>
         </div>
         <div id="help-screen-ar" class="hidden">
-            <div class="close-button">⨉</div>
+            <div class="close-button" id="close-button-ar">⨉</div>
             <h1>ما هي اللّعبة؟</h1>
             <p>حاولوا تخمين الكلمة ال<b>عبرانيّة</b>, لديكم 6 محاولات.</p>
             <p>
@@ -175,35 +165,21 @@
             <p>كل تخمين يؤدّي إلى تغيير لون الأحرف لفحص مدى قربكم من الإجابة الصّحيحة.</p>
             <h2>مثلًا:</h2>
             <p>
-                <span class="letter example typed">ר</span>
+                <span class="letter example" match="other">ר</span>
                 <span class="letter example" match="exact">צ</span>
                 <span class="letter example typed">ו</span>
-                <span class="letter example typed">נ</span>
+                <span class="letter example" match="wrong">נ</span>
                 <span class="letter example typed">י</span>
+            </p>
+            <p>
+                الحرف
+                <b>ר</b>
+                ليس في مكانه الصحيح في كلمة اليوم.
             </p>
             <p>
                 الحرف
                 <b>צ</b>
                 في مكانه الصحيح في كلمة اليوم.
-            </p>
-            <p>
-                <span class="letter example typed">ק</span>
-                <span class="letter example typed">ב</span>
-                <span class="letter example typed">י</span>
-                <span class="letter example typed">י</span>
-                <span class="letter example" match="other">ם</span>
-            </p>
-            <p>
-                الحرف
-                <b>מ</b>
-                ليس في مكانه الصحيح في كلمة اليوم.
-            </p>
-            <p>
-                <span class="letter example typed">א</span>
-                <span class="letter example typed">כ</span>
-                <span class="letter example typed">ל</span>
-                <span class="letter example" match="wrong">נ</span>
-                <span class="letter example typed">ו</span>
             </p>
             <p>
                 الحرف
@@ -214,9 +190,12 @@
                 <b>تلميحات:</b>
                 يمكن الحصول على 3 تلميحات لكل لعبة, عن طريق إشارة المصباح في أعلى الشاشة.
             </p>
+            <button class="level-button" id="level-button-he">
+                اختر المستوى
+            </button>
         </div>
         <div id="success-screen" class="hidden">
-            <div class="close-button">⨉</div>
+            <div class="close-button" id="close-button-success">⨉</div>
             <h1 id="success-header"></h1>
             <div id="spoiler">המלה ה<b>עבראנית</b> היתה <span id="spoiler-word"></span></div>
             <p>הישגים לאורך הזמן:</p>
@@ -268,6 +247,23 @@
                     לשחק שוב
                 </div>
             </div>
+        </div>
+        <div id="levels-screen" class="hidden">
+            <h1>בחירת רמה</h1>
+            <p>
+                כאן ניתן לבחור את רמת הקושי הרצויה במשחק:
+            </p>
+            <br>
+            <input type="radio" id="easy" name="game-level" value="EASY" checked="checked">
+            <label for="easy">קל</label><br>
+            <input type="radio" id="medium" name="game-level" value="MEDIUM">
+            <label for="medium">בינוני</label><br>
+            <input type="radio" id="hard" name="game-level" value="HARD">
+            <label for="hard">קשה</label><br>
+            <br>
+            <button id="choose-level">
+                למשחק!
+            </button>
         </div>
     </div>
     <div id="popup" class="hidden"></div>
