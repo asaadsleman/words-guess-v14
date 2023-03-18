@@ -251,6 +251,12 @@ h2.big {
 #help-screen a {
     font-weight: bold;
 }
+.level-button {
+    background-color: lightgray;
+    border-radius: 12%;
+    border-width: 0ch;
+    font-family: Arimo;
+}
 #help-screen svg {
     display: inline;
     height: calc(4 * var(--unit));
