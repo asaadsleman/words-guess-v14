@@ -31,6 +31,7 @@ let guesses = [];
 let lastestResults = getLastestFormattedResults();
 let hint_attempts = 3;
 let letter_states = {};
+let used_hints = 0;
 
 
 
@@ -262,6 +263,7 @@ async function fill_success_details() {
     document.getElementById('stats-streak').innerText = streak;
     document.getElementById('stats-max-streak').innerText = max_streak;
     document.getElementById('stats-hint-count').innerText = solved_with_hint;
+    document.getElementById('stats-hint-counter').innerText = used_hints;
     document.getElementById('score').innerText = total_score;
 
     const hist_max = Math.max(1, Math.max(...histogram));
@@ -566,20 +568,25 @@ function game_init(){
     let checked_val = document.querySelector('input[name=game-level]:checked').value;
     let i;
     switch (checked_val) {
-        case "HARD":
+        case "LEGEND":
             i = 0;
             break;
         
-        case "MEDIUM":
+        case "HARD":
             i = 1;
             break;
         
-        default:
+        case "MEDIUM":
             i = 2;
+            break;
+        
+        default:
+            i = 3;
             break;
     }
     for(let index = 0; index < i; index++){
         show_helpful_hint(index);
+        used_hints++;
     }
     hide_modal();
     return;
@@ -610,13 +617,24 @@ function show_hint(){
         if(!letter_states.hasOwnProperty(lett)){
             undisc = i;
             break;
-        } else if(letter_states[lett] == 'other'){
+        } else if(letter_states[lett] === 'other'){
             wrongplace = i;
         }
         
     }
     // if all letters have states, exit hint
     let available = (undisc > -1 || wrongplace > -1) ? true : false;
+    // last guess - give word of the day
+    if(guesses.length === 5){
+        let hint = word_of_the_day;
+        for(let i1 = 0; i1 < 5; i1++){
+        type_letter(hint[i1]);
+        }
+    hint_attempts--;
+    used_hints++;
+    make_guess();
+    return;
+    }
     if (!available) return;
     // we have EITHER undisc or undic & wrongplace or only wrongplace
     const inc = (undisc > -1) ? unf_word[undisc] : unf_word[wrongplace];
@@ -626,6 +644,7 @@ function show_hint(){
         type_letter(hint[i1]);
     }
     hint_attempts--;
+    used_hints++;
     make_guess();
 }
 

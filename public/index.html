@@ -205,6 +205,7 @@
                 <div><span id="stats-streak"></span><span>רצף<br />נוכחי</span></div>
                 <div><span id="stats-max-streak"></span><span>רצף ארוך<br />ביותר</span></div>
                 <div><span id="stats-hint-count"></span><span>נפתרו עם<br />רמז</span></div>
+                <div><span id="stats-hint-counter"></span><span>רמזים במשחק<br />האחרון</span></div>
             </div>
             <p>התפלגות כמות הניחושים הנכונים:</p>
             <div id="histogram">
@@ -253,13 +254,15 @@
             <p>
                 כאן ניתן לבחור את רמת הקושי הרצויה במשחק:
             </p>
-            <br>
+            
             <input type="radio" id="easy" name="game-level" value="EASY" checked="checked">
             <label for="easy">קל</label><br>
             <input type="radio" id="medium" name="game-level" value="MEDIUM">
             <label for="medium">בינוני</label><br>
             <input type="radio" id="hard" name="game-level" value="HARD">
             <label for="hard">קשה</label><br>
+            <input type="radio" id="legend" name="game-level" value="LEGEND">
+            <label for="legend">אגדי</label><br>
             <br>
             <button id="choose-level">
                 למשחק!
