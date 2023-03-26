@@ -625,7 +625,7 @@ function show_hint(){
     // if all letters have states, exit hint
     let available = (undisc > -1 || wrongplace > -1) ? true : false;
     // last guess - give word of the day
-    if(guesses.length === 5){
+    if(used_hints === 5){
         let hint = word_of_the_day;
         for(let i1 = 0; i1 < 5; i1++){
         type_letter(hint[i1]);
