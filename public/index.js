@@ -32,6 +32,8 @@ let lastestResults = getLastestFormattedResults();
 let hint_attempts = 3;
 let letter_states = {};
 let used_hints = 0;
+let difficulty = 'NONE';
+let success_by_hint = false;
 
 
 
@@ -134,6 +136,14 @@ function set_modal_state() {
 
         default:
             document.getElementById('modal').classList.add('hidden');
+    }
+}
+
+function adjust_modal(){
+    if(guesses.length !== 0){
+        hide_modal();
+    } else {
+        show_settings_screen();
     }
 }
 
@@ -479,7 +489,6 @@ async function add_result_to_local_storage() {
 function load_from_local_storage() {
     const first_time = !localStorage.getItem('date');
     const new_day = localStorage.getItem('date') !== today;
-    const is_legacy_game_finished = checkIfLegacyGameFinished();
     const finished_today = (localStorage.getItem('finished') === 'yes');
 
     if (localStorage.getItem('date') !== today)
@@ -565,8 +574,11 @@ function validate_word(candidate, index){
 }
 
 function game_init(){
+    if (!localStorage.getItem('difficulty')){
     let checked_val = document.querySelector('input[name=game-level]:checked').value;
     let i;
+    difficulty = checked_val;
+    localStorage.setItem('difficulty', checked_val);
     switch (checked_val) {
         case "LEGEND":
             i = 0;
@@ -588,6 +600,7 @@ function game_init(){
         show_helpful_hint(index);
         used_hints++;
     }
+}
     hide_modal();
     return;
 }
@@ -625,13 +638,15 @@ function show_hint(){
     // if all letters have states, exit hint
     let available = (undisc > -1 || wrongplace > -1) ? true : false;
     // last guess - give word of the day
-    if(used_hints === 5){
+    if(used_hints === 4){
         let hint = word_of_the_day;
         for(let i1 = 0; i1 < 5; i1++){
         type_letter(hint[i1]);
+        
         }
     hint_attempts--;
     used_hints++;
+    success_by_hint = true;
     make_guess();
     return;
     }
@@ -647,6 +662,8 @@ function show_hint(){
     used_hints++;
     make_guess();
 }
+
+
 
 document.addEventListener('DOMContentLoaded', function () {
     load_from_local_storage();
@@ -671,7 +688,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     for (const elt of document.getElementsByClassName('key'))
         elt.addEventListener('click', handle_on_screen_keyboard_click);
-    show_settings_screen();
+    adjust_modal();
     window.addEventListener('popstate', set_modal_state);
     adapt_to_window_size();
     window.addEventListener('resize', adapt_to_window_size);

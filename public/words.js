@@ -102,13 +102,12 @@ const choiceTranslate = {
     'אופנה': 'موضة',
     'עיצוב': 'تصميم',
     'שכונה': 'حي',
+    'מספרה': 'محلقة',
     'תרופה': 'دواء',
     'אפרסק': 'خوخ' 
 };
 
 const CONCAT_CHOICES = "תינוקמחברתמדרכהמעבדהטלפוןדבורהמחשבהמטריהתמונהספריהחולצהציפורשולחןפעמוןכרטיסמסגרתטיפולחקירהחתונהמכונהדרקוןדרכוןקיפודמפלצתנסיכהחולדהקיפודתרגילרעיוןגבינהמדריךגיבורכפתורמכבסהספינהמשאיתרימוןתרגוםחבילהבלגיהדנמרקנשיקהעבירהחינוךקופסאתנועהמדפסתספרותמקלחתמנורהמספרהמירוץחדשותרמקוללימוןמחלקהסלמוןפורמטכפתורמשפחהתרגילסיפורבטחוןפטריהחגורהכותנהגבינהבריכהחברותרפואהבורסהאיפורתאריךילקוטשיעורגיבוררוכסןיהלוםסירנהתבליןקישורהריוןמקלדתאפונהמדורהאבטיחספורטמערכתארמוןמעליתקישואבדיקהמברשתחשבוןתפילהאופנהעיצובשכונהתרופהאפרסק";
-
-const seen = new Set();
 
 function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
@@ -127,10 +126,6 @@ function calculate_choice(date) {
     const day_number = Math.round((date_ts - start_ts) / 86400000);
     const ind = (day_number * 5) % CONCAT_CHOICES.length;
     todays_choice = CONCAT_CHOICES.slice(ind, ind + 5);
-    // words used in prev games
-    if (!seen.has(todays_choice)) {
-        seen.add(todays_choice);
-    }
     return todays_choice;
 }
 
