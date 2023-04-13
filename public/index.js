@@ -140,9 +140,7 @@ function set_modal_state() {
 }
 
 function adjust_modal(){
-    if(guesses.length !== 0){
-        hide_modal();
-    } else {
+    if(guesses.length === 0){
         show_settings_screen();
     }
 }
@@ -574,7 +572,6 @@ function validate_word(candidate, index){
 }
 
 function game_init(){
-    if (!localStorage.getItem('difficulty')){
     let checked_val = document.querySelector('input[name=game-level]:checked').value;
     let i;
     difficulty = checked_val;
@@ -600,7 +597,7 @@ function game_init(){
         show_helpful_hint(index);
         used_hints++;
     }
-}
+
     hide_modal();
     return;
 }
